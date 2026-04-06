@@ -15,6 +15,13 @@
       "when": 1775044883592,
       "tag": "0001_nasty_daimon_hellstrom",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1775476049575,
+      "tag": "0002_cloudy_karma",
+      "breakpoints": true
     }
   ]
 }
