@@ -1,10 +1,11 @@
+import { register } from "node:module";
 import { handlerAgg } from "./commands/aggregate.js";
 import {
     CommandsRegistry,
     registerCommand,
     runCommand,
 } from "./commands/commands.js";
-import { handlerAddFeed, handlerFeeds } from "./commands/feeds.js";
+import { handlerAddFeed, handlerFeeds, handlerFollow, handlerFollowing } from "./commands/feeds.js";
 import { handlerReset } from "./commands/reset.js";
 import { handlerLogin, handlerRegister, handlerUsers } from "./commands/users.js";
 import { argv } from "node:process";
@@ -28,6 +29,8 @@ async function main() {
     registerCommand(registry, "agg", handlerAgg);
     registerCommand(registry, "addfeed", handlerAddFeed);
     registerCommand(registry, "feeds", handlerFeeds);
+    registerCommand(registry, "follow", handlerFollow);
+    registerCommand(registry, "following", handlerFollowing);
     try {
         await runCommand(registry, cmdName, ...args);
     } catch (err) {

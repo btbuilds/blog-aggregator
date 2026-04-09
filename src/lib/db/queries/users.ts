@@ -2,6 +2,7 @@ import { db } from "..";
 import { users } from "../schema";
 import { eq } from "drizzle-orm";
 import { firstOrUndefined } from "./utils";
+import { readConfig } from "src/config";
 
 export async function createUser(name: string) {
   const [result] = await db.insert(users).values({ name: name }).returning();
@@ -26,4 +27,14 @@ export async function getUsers() {
 export async function getUserById(userId: string) {
     const result = await db.select().from(users).where(eq(users.id, userId));
     return firstOrUndefined(result);
+}
+
+export async function getCurrentUserId() {
+    const currentUserName = readConfig().currentUserName;
+    const user = await getUser(currentUserName)
+    if (!user) {
+        throw new Error("Error retrieving user information.")
+    }
+    const userId = user.id;
+    return userId;
 }

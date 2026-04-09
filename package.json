@@ -22,7 +22,7 @@
   "homepage": "https://github.com/btbuilds/blog-aggregator#readme",
   "description": "",
   "devDependencies": {
-    "@types/node": "^25.5.0",
+    "@types/node": "^25.5.2",
     "drizzle-kit": "^0.31.10",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3"
