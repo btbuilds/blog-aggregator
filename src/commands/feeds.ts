@@ -1,25 +1,18 @@
-import { readConfig } from "src/config";
 import { createFeedFollow, getFeedFollowsForUser } from "src/lib/db/queries/feedfollows";
 import { createFeed, getFeedByURL, getFeeds } from "src/lib/db/queries/feeds";
-import { getCurrentUserId, getUser, getUserById } from "src/lib/db/queries/users";
+import { getUserById } from "src/lib/db/queries/users";
 import { Feed, User } from "src/lib/db/schema";
 
-export async function handlerAddFeed(cmdName: string, ...args: string[]) {
+export async function handlerAddFeed(cmdName: string, user: User, ...args: string[]) {
     if (args.length !== 2) {
-        throw new Error(`Name and URL are required. Usage: 'addfeed "Example" "example.com"'`)
+        throw new Error(`Name and URL are required. Usage: 'addfeed "Example" "example.com"'`);
     }
     const name: string = args[0];
     const url: string = args[1];
-    const currentUserName = readConfig().currentUserName;
-    const user = await getUser(currentUserName)
-    if (!user) {
-        throw new Error("Error retrieving user information.")
-    }
-    const userId = user.id;
-    const feed = await createFeed(name, url, userId);
+    const feed = await createFeed(name, url, user.id);
     const feedFollow = await createFeedFollow(user.id, feed.id);
     printFeedFollow(user.name, feedFollow.feedName);
-    console.log(`Feed "${name}" with URL "${url}" successfully created!`)
+    console.log(`Feed "${name}" with URL "${url}" successfully created!`);
     printFeed(feed, user);
 }
 
@@ -33,10 +26,10 @@ export async function handlerFeeds(cmdName: string, ...args: string[]) {
     for (let feed of feeds) {
         let user = await getUserById(feed.userId);
         if (!user) {
-            throw new Error(`User not found for feed ${feed.id}`)
+            throw new Error(`User not found for feed ${feed.id}`);
         }
         printFeed(feed, user);
-        console.log(`-------------------`)
+        console.log(`-------------------`);
     }
 }
 
@@ -49,25 +42,24 @@ function printFeed(feed: Feed, user: User) {
     console.log(`* User:          ${user.name}`);
 }
 
-export async function handlerFollow(cmdName: string, ...args: string[]) {
+export async function handlerFollow(cmdName: string, user: User, ...args: string[]) {
     if (args.length !== 1) {
-        throw new Error(`Incorrect number of arguments. Usage: 'follow www.example.com'`)
+        throw new Error(`Incorrect number of arguments. Usage: 'follow www.example.com'`);
     }
-    const url = args[0]
-    const userId = await getCurrentUserId();
+    const url = args[0];
     const feed = await getFeedByURL(url);
     if (!feed) {
-        throw new Error(`Error finding feed '${url}'`)
+        throw new Error(`Error finding feed '${url}'`);
     }
-    const feedFollow = await createFeedFollow(userId, feed.id);
+    const feedFollow = await createFeedFollow(user.id, feed.id);
     printFeedFollow(feedFollow.userName, feedFollow.feedName);
 }
 
-export async function handlerFollowing() {
-    const userId = await getCurrentUserId();
-    const feedFollows = await getFeedFollowsForUser(userId);
+export async function handlerFollowing(cmdName: string, user: User, ...args: string[]) {
+    const feedFollows = await getFeedFollowsForUser(user.id);
     if (feedFollows.length === 0) {
-        console.log(`No feed follows found for current user.`)
+        console.log(`No feed follows found for current user.`);
+        return;
     }
     console.log(`Feed follows for current user:`);
     for (let ff of feedFollows) {
