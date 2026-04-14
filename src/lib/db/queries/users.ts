@@ -28,13 +28,3 @@ export async function getUserById(userId: string) {
     const result = await db.select().from(users).where(eq(users.id, userId));
     return firstOrUndefined(result);
 }
-
-export async function getCurrentUserId() {
-    const currentUserName = readConfig().currentUserName;
-    const user = await getUser(currentUserName)
-    if (!user) {
-        throw new Error("Error retrieving user information.")
-    }
-    const userId = user.id;
-    return userId;
-}

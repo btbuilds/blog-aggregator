@@ -16,11 +16,11 @@ export function setUser(userName: string) {
 export function readConfig(): Config {
     const fullPath: string = getConfigFilePath()
     try {
-        const contents: string = readFileSync(fullPath, { encoding: "utf-8" })
+        const contents: string = readFileSync(fullPath, { encoding: "utf-8" });
         const rawConfig = JSON.parse(contents);
         return validateConfig(rawConfig);
     } catch (error) {
-        console.error("Error reading file:", error)
+        console.error("Error reading file:", error);
         throw error;
     }
 }
@@ -32,7 +32,7 @@ function getConfigFilePath(): string {
 }
 
 function writeConfig(config: Config): void {
-    const fullPath: string = getConfigFilePath()
+    const fullPath: string = getConfigFilePath();
     const rawConfig = {
         db_url: config.dbUrl,
         current_user_name: config.currentUserName,
@@ -40,19 +40,19 @@ function writeConfig(config: Config): void {
     const data: string = JSON.stringify(rawConfig, null, 2);
     try {
         writeFileSync(fullPath, data, { encoding: "utf-8" });
-        console.log(`Successfully wrote to file "${fullPath}"`)
+        console.log(`Successfully wrote to file "${fullPath}"`);
     } catch (error) {
-        console.error("Error writing file:", error)
+        console.error("Error writing file:", error);
     }
 }
 
 function validateConfig(rawConfig: any): Config {
-    const fullPath: string = getConfigFilePath()
+    const fullPath: string = getConfigFilePath();
     if (!rawConfig.db_url || typeof rawConfig.db_url !== "string") {
-        throw new Error(`'db_url' is required in the configuration file. Please check "${fullPath}"`)
+        throw new Error(`'db_url' is required in the configuration file. Please check "${fullPath}"`);
     }
     if (!rawConfig.current_user_name || typeof rawConfig.current_user_name !== "string") {
-        throw new Error(`'current_user_name' is required in the configuration file. Please check "${fullPath}"`)
+        throw new Error(`'current_user_name' is required in the configuration file. Please check "${fullPath}"`);
     }
 
     const config: Config = {

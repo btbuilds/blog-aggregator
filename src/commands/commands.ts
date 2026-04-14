@@ -15,9 +15,9 @@ export type UserCommandHandler = (
 export function middlewareLoggedIn(handler: UserCommandHandler): CommandHandler {
     return async (cmdName: string, ...args: string[]) => {
         const currentUserName = readConfig().currentUserName;
-        const user = await getUser(currentUserName)
+        const user = await getUser(currentUserName);
         if (!user) {
-            throw new Error("Error retrieving user information.")
+            throw new Error("Error retrieving user information.");
         }
         await handler(cmdName, user, ...args);
     };
@@ -38,7 +38,7 @@ export async function runCommand(
 ): Promise<void> {
     const handler = registry[cmdName];
     if (!handler) {
-        throw new Error(`Command "${cmdName}" not found.`)
+        throw new Error(`Command "${cmdName}" not found.`);
     }
 
     await handler(cmdName, ...args);

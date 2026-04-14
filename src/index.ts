@@ -1,4 +1,3 @@
-import { register } from "node:module";
 import { handlerAgg } from "./commands/aggregate.js";
 import {
     CommandsRegistry,
