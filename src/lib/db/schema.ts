@@ -22,7 +22,8 @@ export const feeds = pgTable("feeds", {
         .$onUpdate(() => new Date()),
     name: text("name").notNull(),
     url: text("url").unique().notNull(),
-    userId: uuid("user_id").notNull().references(() => users.id, { onDelete: "cascade" })
+    userId: uuid("user_id").notNull().references(() => users.id, { onDelete: "cascade" }),
+    lastFetchedAt: timestamp("last_fetched_at")
 });
 
 export const feedFollows = pgTable("feed_follows", {
