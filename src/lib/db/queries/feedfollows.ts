@@ -12,7 +12,7 @@ export async function createFeedFollow(userId: string, feedId: string) {
         .select({
             id: feedFollows.id,
             createdAt: feedFollows.createdAt,
-            updatedAT: feedFollows.updatedAt,
+            updatedAt: feedFollows.updatedAt,
             userId: feedFollows.userId,
             feedId: feedFollows.feedId,
             feedName: feeds.name,
@@ -36,7 +36,7 @@ export async function getFeedFollowsForUser(userId: string) {
         .select({
             id: feedFollows.id,
             createdAt: feedFollows.createdAt,
-            updatedAT: feedFollows.updatedAt,
+            updatedAt: feedFollows.updatedAt,
             userId: feedFollows.userId,
             feedId: feedFollows.feedId,
             feedname: feeds.name,
